@@ -1,24 +1,97 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import TrainingTable from './components/TrainingTable';
+import CustomerTable from './components/CustomerTable';
+
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
+import SearchIcon from '@material-ui/icons/Search';
+import TextField from '@material-ui/core/TextField';
+import {makeStyles} from '@material-ui/core/styles';
+import Drawer from '@material-ui/core/Drawer';
+import MenuItem from '@material-ui/core/MenuItem';
+import { Divider } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(1),
+  },
+  title: {
+    flexGrow: 1,
+  },
+  // necessary for content to be below app bar
+  toolbar: theme.mixins.toolbar,
+  drawerPaper: {
+    width: 200,
+  },
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+  },
+}));
 
 function App() {
+  const classes = useStyles();
+  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [content, setContent] = React.useState(<CustomerTable />);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
+  const showCustomers = () =>{
+    setContent(<CustomerTable />);
+  }
+
+  const showTrainings = () => {
+    setContent(<TrainingTable />);
+  }
+ 
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className={classes.root}>
+     
+      <AppBar position='static'>
+        <Toolbar>
+          <IconButton className={classes.menuButton} onClick={handleDrawerToggle} edge="start" color="inherit" aria-label="menu">
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" className={classes.title}>
+            Personal Trainer
+          </Typography>
+            <div>         
+              <SearchIcon />
+              <TextField placeholder="Search…"/>
+            </div>
+        </Toolbar>
+      </AppBar>
+
+      <Drawer 
+          width = {200}
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }} >
+        <div className={classes.toolbar} />
+          <Divider />  
+           <MenuItem onClick={showCustomers}> Customers </MenuItem>
+           <MenuItem onClick={showTrainings}> Trainings </MenuItem>                           
+      </Drawer>
+
+      <main className={classes.content}>
+        {content}
+      </main>   
     </div>
   );
 }
