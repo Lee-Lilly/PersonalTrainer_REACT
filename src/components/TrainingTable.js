@@ -41,6 +41,13 @@ export default function TrainingTable() {
             customSort: (a,b) => b.customer.firstname < a.customer.firstname
         }
     ]
+    
+    console.log(trainings);
+
+    const [state, setState] = useState({columns, trainings});
+    console.log(state.columns);
+    // Strange! "trainings" becomes an empty array when pass to a new const state.
+    console.log(state.trainings);
 
     return (
         <div>
@@ -48,6 +55,51 @@ export default function TrainingTable() {
                 title="Trainings"
                 columns={columns}
                 data={trainings}
+                editable={{
+                    onRowAdd: newData =>
+                        new Promise((resolve, reject) => {
+                            setTimeout(() => {
+                                {
+                                    const data = trainings ;
+                                    data.push(newData);
+                                    setState({...state, data });
+                                }
+                                resolve()
+                            }, 1000)
+                        }),
+                    onRowUpdate: (newData, oldData) =>
+                        new Promise((resolve, reject) => {
+                            setTimeout(() => {
+                                {
+                                    const data = trainings ;
+                                    const index = data.indexOf(oldData);
+                                    data[index] = newData;
+                                    setState({ ...state, data });
+                                }
+                                resolve()
+                            }, 1000)
+                        }),
+                    onRowDelete: oldData =>
+                        new Promise((resolve, reject) => {
+                            setTimeout(() => {
+                                {
+                                    let data = trainings ;
+                                    const index = data.indexOf(oldData);
+                                    data.splice(index, 1);
+                                    setState({ ...state, data });
+                                }
+                                resolve()
+                            }, 1000)
+                        }),
+                }}
+                options={{
+                    rowStyle: {
+                        backgroundColor: '#EEE',
+                    },
+                    headerStyle: {
+                        backgroundColor: '#f0f8ff',
+                    }
+                }} 
             />    
         </div>
     )

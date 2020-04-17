@@ -8,12 +8,11 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import TextField from '@material-ui/core/TextField';
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Divider } from '@material-ui/core';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,9 +25,9 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   // necessary for content to be below app bar
-  toolbar: theme.mixins.toolbar,
-  drawerPaper: {
-    width: 200,
+    toolbar: theme.mixins.toolbar,
+    drawerPaper: {
+    width: 150,
   },
   content: {
     flexGrow: 1,
@@ -65,15 +64,12 @@ function App() {
           <Typography variant="h6" className={classes.title}>
             Personal Trainer
           </Typography>
-            <div>         
-              <SearchIcon />
-              <TextField placeholder="Search…"/>
-            </div>
+           <div></div>
         </Toolbar>
       </AppBar>
 
       <Drawer 
-          width = {200}
+          width = {150}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
@@ -83,7 +79,11 @@ function App() {
           ModalProps={{
             keepMounted: true, // Better open performance on mobile.
           }} >
-        <div className={classes.toolbar} />
+        <div className={classes.toolbar}>
+          <IconButton onClick={handleDrawerToggle}>
+            <ArrowBackIcon />
+          </IconButton>
+        </div>
           <Divider />  
            <MenuItem onClick={showCustomers}> Customers </MenuItem>
            <MenuItem onClick={showTrainings}> Trainings </MenuItem>                           
