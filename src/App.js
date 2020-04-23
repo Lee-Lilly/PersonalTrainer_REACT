@@ -80,7 +80,7 @@ function App() {
             keepMounted: true, // Better open performance on mobile.
           }} >
         <div className={classes.toolbar}>
-          <IconButton onClick={handleDrawerToggle}>
+          <IconButton onClick={handleDrawerToggle} >
             <ArrowBackIcon />
           </IconButton>
         </div>
