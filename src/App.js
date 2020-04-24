@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import TrainingTable from './components/TrainingTable';
 import CustomerTable from './components/CustomerTable';
+import CalendarView from './components/TrainingSchedule';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -12,7 +13,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import MenuItem from '@material-ui/core/MenuItem';
 import { Divider } from '@material-ui/core';
-import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import DirectionsRunIcon from '@material-ui/icons/DirectionsRun';
+import ScheduleIcon from '@material-ui/icons/Schedule';
+import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,14 +31,19 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   // necessary for content to be below app bar
-    toolbar: theme.mixins.toolbar,
-    drawerPaper: {
-    width: 150,
+  toolbar: theme.mixins.toolbar,
+   //size of drawer canvas
+  drawerPaper: {
+    width: 180,
   },
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
+    backgroundColor: '#ecf2f9',
   },
+  icon: {
+    color: '#79a6d2',
+  }
 }));
 
 function App() {
@@ -52,6 +63,9 @@ function App() {
     setContent(<TrainingTable />);
   }
  
+  const showCalendar = () => {
+    setContent(<CalendarView />);
+  }
 
   return (
     <div className={classes.root}>
@@ -69,7 +83,6 @@ function App() {
       </AppBar>
 
       <Drawer 
-          width = {150}
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
@@ -80,13 +93,23 @@ function App() {
             keepMounted: true, // Better open performance on mobile.
           }} >
         <div className={classes.toolbar}>
-          <IconButton onClick={handleDrawerToggle} >
-            <ArrowBackIcon />
+          <IconButton onClick={handleDrawerToggle} className={classes.icon}>
+            <ArrowForwardRoundedIcon />
           </IconButton>
         </div>
-          <Divider />  
-           <MenuItem onClick={showCustomers}> Customers </MenuItem>
-           <MenuItem onClick={showTrainings}> Trainings </MenuItem>                           
+          <Divider /> 
+            <MenuItem onClick={showCustomers}>
+              <ListItemIcon className={classes.icon}> <AccountCircleIcon /></ListItemIcon>
+              <ListItemText primary="Customers" />
+              </MenuItem>                    
+           <MenuItem onClick={showTrainings}> 
+              <ListItemIcon className ={classes.icon}> < DirectionsRunIcon /></ListItemIcon>
+              <ListItemText primary="Training" /> 
+           </MenuItem> 
+           <MenuItem onClick={showCalendar}>
+              <ListItemIcon className={classes.icon}> <ScheduleIcon /></ListItemIcon>
+              <ListItemText primary="Schedule" /> 
+           </MenuItem>                          
       </Drawer>
 
       <main className={classes.content}>

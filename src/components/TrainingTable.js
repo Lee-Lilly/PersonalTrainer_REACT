@@ -8,7 +8,7 @@ import {
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 
-export default function TrainingTable(props) {
+export default function TrainingTable() {
     const [trainings, setTrainings] = useState([]);
     const [msg, setMsg] = useState('blabla');
     const [open, setOpen] = useState(false);
