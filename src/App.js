@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     padding: theme.spacing(3),
-    backgroundColor: '#ecf2f9',
+    backgroundColor: '#f2f2f2',
   },
   icon: {
     color: '#79a6d2',
@@ -93,7 +93,7 @@ function App() {
             keepMounted: true, // Better open performance on mobile.
           }} >
         <div className={classes.toolbar}>
-          <IconButton onClick={handleDrawerToggle} className={classes.icon}>
+          <IconButton onClick={handleDrawerToggle} color = "primary">
             <ArrowForwardRoundedIcon />
           </IconButton>
         </div>

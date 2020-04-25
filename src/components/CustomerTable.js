@@ -8,6 +8,7 @@ export default function CustomerTable() {
     const [customers, setCustomers] = useState([]);
     const [msg, setMsg] = useState('blabla');
     const [open, setOpen] = useState(false);
+    const [selectedRow, setSelectedRow] =useState();
 
     useEffect(() => {
         getCustomers();
@@ -187,10 +188,13 @@ export default function CustomerTable() {
                             }, 1000)
                         }),
                 }}
+                onRowClick ={((evt, selectedRow) => setSelectedRow(selectedRow))}
                 options={{
-                    rowStyle: {
-                        backgroundColor: '#EEE',
-                    },
+                    rowStyle: rowData =>({
+                        backgroundColor: (selectedRow && 
+                            selectedRow.tableData.id === rowData.tableData.id) ? '#f2f2f2':'#ffffff'
+                        }),
+                  
                     headerStyle: {
                         backgroundColor: '#f0f8ff',
                     }       

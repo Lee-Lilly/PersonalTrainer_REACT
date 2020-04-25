@@ -12,6 +12,7 @@ export default function TrainingTable() {
     const [trainings, setTrainings] = useState([]);
     const [msg, setMsg] = useState('blabla');
     const [open, setOpen] = useState(false);
+    const [selectedRow, setSelectedRow] = useState();
 
     useEffect(() => {
         getTrainings();
@@ -145,10 +146,13 @@ export default function TrainingTable() {
                             }, 1000)
                         }),
                 }}
+                onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow))}
                 options={{
-                    rowStyle: {
-                        backgroundColor: '#EEE',
-                    },
+                    rowStyle: rowData => ({
+                        backgroundColor: (selectedRow &&
+                            selectedRow.tableData.id === rowData.tableData.id) ? '#f2f2f2' : '#ffffff'
+                    }),
+
                     headerStyle: {
                         backgroundColor: '#f0f8ff',
                     }
