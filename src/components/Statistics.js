@@ -21,7 +21,7 @@ export default function Statistics() {
         //each item is put into an Object container
         const container = {};
         // only valid trainings are counted into statistics
-        if (item.activity !== '' && item.customer !== null && item.duration !== 0) {
+        if (item.activity !== '' && item.customer != null && item.duration !== 0) {
             container.activity = item.activity;
             container.customer = item.customer.firstname + " " + item.customer.lastname;
             container.time_spent = item.duration;
@@ -85,9 +85,6 @@ export default function Statistics() {
                         title: 'Total Minutes',
                         minValue: 0,
                     },
-                    vAxis: {
-                        title: 'Customers',
-                    }, 
                     legend: { position: 'none' },
                 }}
             />   

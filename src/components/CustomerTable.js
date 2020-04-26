@@ -139,12 +139,16 @@ export default function CustomerTable() {
                             setTimeout(() => {
                                 {
                                     //add to current state (fast refresh)
-                                    let data = customers;
-                                    data.push(newData);
-                                    setState({ ...state, data });
-                                    
-                                    //add to database
-                                    addCustomer(newData);
+                                    let data = customers;                                   
+                                    if (newData.firstname!= null || newData.lastname != null) {
+                                        data.push(newData);
+                                        setState({ ...state, data });
+                                        //add to database
+                                        addCustomer(newData);
+                                    } else{
+                                        alert("can not add empty customer");
+                                    } 
+
                                 }     
                                 resolve()
                             }, 1000)
