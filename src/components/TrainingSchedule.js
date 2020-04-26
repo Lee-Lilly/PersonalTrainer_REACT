@@ -11,7 +11,7 @@ import "@fullcalendar/timegrid/main.css";
 
 export default function CalendarView() {
     const [trainings, setTrainings] = useState([]);
-   
+    
     const getTrainings = () => {
         fetch('https://customerrest.herokuapp.com/gettrainings')
             .then(response => response.json())
@@ -23,18 +23,20 @@ export default function CalendarView() {
         getTrainings();
     }, [])
 
-    //reformat training objects: modify the content of each object and return a new array
+    //reformat training objects: map each item into an object and return a new array
     const eventsArray = trainings.map(item => {
+        //each item is put into an Object container
         const container ={};
-
-        container.title = item.activity + " / " + item.customer.firstname + " " + item.customer.lastname ;
-        container.start = moment(item.date).toDate();
-        container.end = moment(item.date).add(item.duration, 'm').toDate();
-
+        // only valid trainings are mapped to calendar
+        if (item.activity !== '' && item.customer != null && item.date != null && item.duration !== 0 ){
+            container.title = item.activity + " / " + item.customer.firstname + " " + item.customer.lastname ;
+            container.start = moment(item.date).toDate();
+            container.end = moment(item.date).add(item.duration, 'm').toDate();
+        } // get object     
         return container;
     })
 
-   // console.log(eventsArray);
+    console.log(eventsArray);
   
     return (
         <div>

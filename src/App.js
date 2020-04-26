@@ -3,6 +3,7 @@ import './App.css';
 import TrainingTable from './components/TrainingTable';
 import CustomerTable from './components/CustomerTable';
 import CalendarView from './components/TrainingSchedule';
+import Statistics from './components/Statistics';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -19,6 +20,7 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import DirectionsRunIcon from '@material-ui/icons/DirectionsRun';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import ArrowForwardRoundedIcon from '@material-ui/icons/ArrowForwardRounded';
+import AssessmentIcon from '@material-ui/icons/Assessment';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,6 +69,10 @@ function App() {
     setContent(<CalendarView />);
   }
 
+  const showStatistics =() =>{
+    setContent(<Statistics />);
+  }
+
   return (
     <div className={classes.root}>
      
@@ -109,7 +115,11 @@ function App() {
            <MenuItem onClick={showCalendar}>
               <ListItemIcon className={classes.icon}> <ScheduleIcon /></ListItemIcon>
               <ListItemText primary="Schedule" /> 
-           </MenuItem>                          
+           </MenuItem>  
+        <MenuItem onClick={showStatistics}>
+          <ListItemIcon className={classes.icon}> <AssessmentIcon /></ListItemIcon>
+          <ListItemText primary="Statistics" />
+        </MenuItem>                                            
       </Drawer>
 
       <main className={classes.content}>
