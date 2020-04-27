@@ -8,7 +8,7 @@ export default function CustomerTable() {
     const [customers, setCustomers] = useState([]);
     const [msg, setMsg] = useState('blabla');
     const [open, setOpen] = useState(false);
-    const [selectedRow, setSelectedRow] =useState();
+    const [selectedRow, setSelectedRow] = useState();
 
     useEffect(() => {
         getCustomers();
@@ -35,7 +35,7 @@ export default function CustomerTable() {
                 setMsg("New Customer is added"); //adding confirmed 
                 setOpen(true);
             })
-            .catch(err => console.error(err))     
+            .catch(err => console.error(err))
     }
 
     const updateCustomer = (link, customer) => {
@@ -57,36 +57,41 @@ export default function CustomerTable() {
         fetch(link, { method: 'Delete' })
             .then(_ => getCustomers()) //refresh from database
             .then(_ => setMsg("Customer is removed.")) //deletion confirmed
-            .then(_ => setOpen(true)) 
+            .then(_ => setOpen(true))
             .catch(err => console.error(err))
-        
+
     }
 
     const addTraining = (training) => {
-        fetch('https://customerrest.herokuapp.com/api/trainings',
-            {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(training)
-            })
-            .then(console.log(training))
-            .then(_ => {
-                setMsg("New Training is added");
-                setOpen(true);
-            })
-            .catch(err => console.error(err))
+        if (training.activity !== '' && training.duration > 0 && training.duration !== '') {
+            fetch('https://customerrest.herokuapp.com/api/trainings',
+                {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(training)
+                })
+                .then(console.log(training))
+                .then(_ => {
+                    setMsg("New Training is added");
+                    setOpen(true);
+                }
+                ).catch(err => console.error(err))
+        } else {
+            alert("Activity name is required and duration > 0")
+        }
+
     }
 
-    
+
     const handelClose = () => {
         setOpen(false);
-    } 
-   
+    }
+
     const columns = [
         {
             title: '',
             editable: 'never',
-            render: rowData => (<AddTraining addTraining={addTraining} customer={rowData}/>)
+            render: rowData => (<AddTraining addTraining={addTraining} customer={rowData} />)
         },
         {
             title: 'First Name',
@@ -120,16 +125,16 @@ export default function CustomerTable() {
             field: 'phone',
         }
     ]
-    
-    const [state, setState] = useState({columns, customers});
+
+    const [state, setState] = useState({ columns, customers });
     /* console.log(state.columns);
         Strange! "customers" becomes an empty array when pass to a new const state.
         onsole.log(state.customers); */
 
-    return(
+    return (
         <div>
             <Snackbar open={open} autoHideDuration={6000} onClose={handelClose} message={msg}></Snackbar>
-            <MaterialTable 
+            <MaterialTable
                 title="Customers"
                 columns={columns}
                 data={customers}
@@ -139,17 +144,17 @@ export default function CustomerTable() {
                             setTimeout(() => {
                                 {
                                     //add to current state (fast refresh)
-                                    let data = customers;                                   
-                                    if (newData.firstname!= null || newData.lastname != null) {
+                                    let data = customers;
+                                    if (newData.firstname !== '' && newData.lastname !== '' && newData.firstname != null && newData.lastname != null) {
                                         data.push(newData);
                                         setState({ ...state, data });
                                         //add to database
                                         addCustomer(newData);
-                                    } else{
+                                    } else {
                                         alert("can not add empty customer");
-                                    } 
+                                    }
 
-                                }     
+                                }
                                 resolve()
                             }, 1000)
                         }),
@@ -160,13 +165,16 @@ export default function CustomerTable() {
                                     //update to current state (fast refresh)
                                     let data = customers;
                                     let index = data.indexOf(oldData);
-                                    data[index] = newData;
-                                    setState({...state, data}); 
-
-                                    //update to database
                                     let link_self = oldData.links[0].href;
-                                    updateCustomer(link_self, newData);   
-                                                                                                 
+
+                                    if (newData.firstname !== '' && newData.lastname !== '' && newData.firstname != null && newData.lastname != null) {
+                                        data[index] = newData;
+                                        setState({ ...state, data });
+                                        //update to database                                      
+                                        updateCustomer(link_self, newData);
+                                    } else {
+                                        alert("customer name is required")
+                                    }
                                 }
                                 resolve()
                             }, 1000)
@@ -179,31 +187,31 @@ export default function CustomerTable() {
                                     let data = customers;
                                     let index = data.indexOf(oldData);
                                     data.splice(index, 1);
-                                    setState({...state, data});    
+                                    setState({ ...state, data });
 
                                     //delete from database
-                                    let link_self= oldData.links[0].href;
-                                    let link_training = oldData.links[2].href; 
+                                    let link_self = oldData.links[0].href;
+                                    let link_training = oldData.links[2].href;
                                     deleteCustomer(link_self);
-                                    deleteCustomer(link_training); 
-                                                                                                               
+                                    deleteCustomer(link_training);
+
                                 }
                                 resolve()
                             }, 1000)
                         }),
                 }}
-                onRowClick ={((evt, selectedRow) => setSelectedRow(selectedRow))}
+                onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow))}
                 options={{
-                    rowStyle: rowData =>({
-                        backgroundColor: (selectedRow && 
-                            selectedRow.tableData.id === rowData.tableData.id) ? '#f2f2f2':'#ffffff'
-                        }),
-                  
+                    rowStyle: rowData => ({
+                        backgroundColor: (selectedRow &&
+                            selectedRow.tableData.id === rowData.tableData.id) ? '#f2f2f2' : '#ffffff'
+                    }),
+
                     headerStyle: {
                         backgroundColor: '#f0f8ff',
-                    }       
-                }} 
+                    }
+                }}
             />
         </div>
-    )    
+    )
 }

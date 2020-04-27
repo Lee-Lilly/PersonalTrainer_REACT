@@ -74,57 +74,58 @@ function App() {
   }
 
   return (
-    <div className={classes.root}>
-     
-      <AppBar position='static'>
-        <Toolbar>
-          <IconButton className={classes.menuButton} onClick={handleDrawerToggle} edge="start" color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            Personal Trainer
-          </Typography>
-           <div></div>
-        </Toolbar>
-      </AppBar>
+    <div className="App">
+      <div className={classes.root}>
+        <AppBar position='static'>
+          <Toolbar>
+            <IconButton className={classes.menuButton} onClick={handleDrawerToggle} edge="start" color="inherit" aria-label="menu">
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" className={classes.title}>
+              Personal Trainer
+            </Typography>
+            <div></div>
+          </Toolbar>
+        </AppBar>
 
-      <Drawer 
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          classes={{
-            paper: classes.drawerPaper,
-          }}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }} >
-        <div className={classes.toolbar}>
-          <IconButton onClick={handleDrawerToggle} color = "primary">
-            <ArrowForwardRoundedIcon />
-          </IconButton>
-        </div>
-          <Divider /> 
-            <MenuItem onClick={showCustomers}>
-              <ListItemIcon className={classes.icon}> <AccountCircleIcon /></ListItemIcon>
-              <ListItemText primary="Customers" />
-              </MenuItem>                    
-           <MenuItem onClick={showTrainings}> 
-              <ListItemIcon className ={classes.icon}> < DirectionsRunIcon /></ListItemIcon>
-              <ListItemText primary="Training" /> 
-           </MenuItem> 
-           <MenuItem onClick={showCalendar}>
-              <ListItemIcon className={classes.icon}> <ScheduleIcon /></ListItemIcon>
-              <ListItemText primary="Schedule" /> 
-           </MenuItem>  
-        <MenuItem onClick={showStatistics}>
-          <ListItemIcon className={classes.icon}> <AssessmentIcon /></ListItemIcon>
-          <ListItemText primary="Statistics" />
-        </MenuItem>                                            
-      </Drawer>
+        <Drawer 
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }} >
+          <div className={classes.toolbar}>
+            <IconButton onClick={handleDrawerToggle} color = "primary">
+              <ArrowForwardRoundedIcon />
+            </IconButton>
+          </div>
+            <Divider /> 
+              <MenuItem onClick={showCustomers}>
+                <ListItemIcon className={classes.icon}> <AccountCircleIcon /></ListItemIcon>
+                <ListItemText primary="Customers" />
+                </MenuItem>                    
+            <MenuItem onClick={showTrainings}> 
+                <ListItemIcon className ={classes.icon}> < DirectionsRunIcon /></ListItemIcon>
+                <ListItemText primary="Training" /> 
+            </MenuItem> 
+            <MenuItem onClick={showCalendar}>
+                <ListItemIcon className={classes.icon}> <ScheduleIcon /></ListItemIcon>
+                <ListItemText primary="Schedule" /> 
+            </MenuItem>  
+          <MenuItem onClick={showStatistics}>
+            <ListItemIcon className={classes.icon}> <AssessmentIcon /></ListItemIcon>
+            <ListItemText primary="Statistics" />
+          </MenuItem>                                            
+        </Drawer>
 
-      <main className={classes.content}>
-        {content}
-      </main>   
+        <main className={classes.content}>
+          {content}
+        </main>  
+        </div> 
     </div>
   );
 }

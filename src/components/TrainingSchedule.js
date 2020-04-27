@@ -28,7 +28,7 @@ export default function CalendarView() {
         //each item is put into an Object container
         const container ={};
         // only valid trainings are mapped to calendar
-        if (item.activity !== '' && item.customer != null && item.date != null && item.duration !== 0 ){
+        if (item.activity !== '' && item.customer != null && item.date != null && item.duration > 0 && item.duration !== ''){
             container.title = item.activity + " / " + item.customer.firstname + " " + item.customer.lastname ;
             container.start = moment(item.date).toDate();
             container.end = moment(item.date).add(item.duration, 'm').toDate();

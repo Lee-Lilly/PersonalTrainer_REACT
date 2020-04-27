@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import MaterialTable from "material-table";
-import Moment from "react-moment";
+import moment from "moment";
 import Snackbar from '@material-ui/core/Snackbar';
 import {
     MuiPickersUtilsProvider,
@@ -24,7 +24,7 @@ export default function TrainingTable() {
             .then(data => setTrainings(data))
             .catch(err => console.error(err))
     }
-   
+
     const updateTraining = (link, training) => {
         fetch(link,
             {
@@ -53,7 +53,7 @@ export default function TrainingTable() {
 
     const handelClose = () => {
         setOpen(false);
-    } 
+    }
 
     const columns = [
         {
@@ -63,8 +63,10 @@ export default function TrainingTable() {
         {
             title: 'Date',
             field: 'date',
-            render: rowData => {return (<Moment format='Do MMMM YYYY - HH:mm'>{rowData.date}</Moment>)},
-            editComponent: ({value, onChange}) =>(
+            render: rowData => {
+                return (moment(rowData.date).format('MMMM Do YYYY, h:mm a'))
+            },
+            editComponent: ({ value, onChange }) => (
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <KeyboardDateTimePicker
                         id="dateTime"
@@ -75,8 +77,8 @@ export default function TrainingTable() {
                         KeyboardButtonProps={{
                             'aria-label': 'change date & time',
                         }}
-                    />                    
-                </MuiPickersUtilsProvider> 
+                    />
+                </MuiPickersUtilsProvider>
             )
         },
         {
@@ -92,14 +94,11 @@ export default function TrainingTable() {
                     return (rowData.customer.firstname + " " + rowData.customer.lastname)
                 } else { return ("null") }
             },
-            customSort: (a,b) => b.customer.firstname < a.customer.firstname
+            customSort: (a, b) => b.customer.firstname < a.customer.firstname
         }
     ]
-    
-   const [state, setState] = useState({columns, trainings});
-   /* console.log(state.columns);
-        Strange! "trainings" becomes an empty array when pass to a new const state.
-    console.log(state.trainings); */
+    //create a current table state for testing or fast refresh
+    const [state, setState] = useState({ columns, trainings });
 
     return (
         <div>
@@ -114,15 +113,19 @@ export default function TrainingTable() {
                             setTimeout(() => {
                                 {
                                     //update to the current state (fast refresh)
-                                    let data = trainings ;
+                                    let data = trainings;
                                     let index = data.indexOf(oldData);
-                                    data[index] = newData;
-                                    setState({ ...state, data });
-
-                                    //update to database 
                                     let training_id = oldData.id;
-                                    const link = 'https://customerrest.herokuapp.com/api/trainings/' +  training_id ;   
-                                    updateTraining(link, newData);
+                                    const link = 'https://customerrest.herokuapp.com/api/trainings/' + training_id;
+
+                                    if (newData.activity !== '' && newData.duration > 0 && newData.duration !== '') {
+                                        data[index] = newData;
+                                        setState({ ...state, data });
+                                        //update to database 
+                                        updateTraining(link, newData);
+                                    } else { //give feedback through current table state
+                                        alert("Activity name is required and duration > 0");
+                                    }
                                 }
                                 resolve()
                             }, 1000)
@@ -132,14 +135,14 @@ export default function TrainingTable() {
                             setTimeout(() => {
                                 {
                                     //delete from current state (fast refresh)
-                                    let data = trainings ;
+                                    let data = trainings;
                                     let index = data.indexOf(oldData);
                                     data.splice(index, 1);
                                     setState({ ...state, data });
 
                                     //delete from database
                                     let training_id = oldData.id;
-                                    const link = 'https://customerrest.herokuapp.com/api/trainings/' +  training_id ;
+                                    const link = 'https://customerrest.herokuapp.com/api/trainings/' + training_id;
                                     deleteTraining(link);
                                 }
                                 resolve()
@@ -156,8 +159,8 @@ export default function TrainingTable() {
                     headerStyle: {
                         backgroundColor: '#f0f8ff',
                     }
-                }} 
-            /> 
+                }}
+            />
         </div>
     )
 }   
